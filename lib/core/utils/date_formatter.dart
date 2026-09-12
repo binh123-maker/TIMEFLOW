@@ -6,6 +6,12 @@ class DateFormatter {
 
   static final DateFormat _timeFormat = DateFormat('HH:mm', 'vi');
 
+  /// Compares two DateTimes by calendar day only (ignoring hours, minutes, etc.)
+  static bool isSameDay(DateTime? a, DateTime? b) {
+    if (a == null || b == null) return false;
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
   /// Formats date into Vietnamese readable string (e.g. "Thứ Bảy, 12/09/2026")
   static String formatHeaderDate(DateTime date) {
     final String dayName = _getDayNameInVietnamese(date.weekday);

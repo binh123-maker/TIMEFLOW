@@ -119,7 +119,8 @@ flutter run -d windows
 
 * **Phase 1 (HOÀN THÀNH)**: Khởi tạo dự án, kiến trúc Clean Architecture + Riverpod + GoRouter, Material 3 Light/Dark theme, Responsive layout Mobile/Desktop.
 * **Phase 2 (HOÀN THÀNH)**: Tích hợp Local Database bằng Drift & SQLite (`timeflow.sqlite`), hoàn thiện Task CRUD (Create, Watch Stream, Update, Delete, Toggle Completion), Title & Time Validation, kết nối dữ liệu thật cho Home Screen và Tasks Screen.
-* **Phase 3**: Tích hợp Local Notifications nhắc giờ công việc trên Android và Windows.
-* **Phase 4**: Hoàn thiện chế độ Tập trung (Pomodoro Timer) và Biểu đồ Thống kê Năng suất.
-* **Phase 5**: Backend API, Google Login, Đồng bộ dữ liệu Cloud Sync cho tài khoản TIMEFLOW Plus và Hệ thống Admin.
+* **Phase 3 (HOÀN THÀNH)**: Hoàn thiện màn hình Lịch (Calendar & Task Scheduling), hiển thị lưới 7 cột với các ngày thuộc tháng kế cận, dấu chấm chỉ báo công việc (tối đa 3 dots), tự động lọc theo ngày được chọn, sắp xếp công việc theo giờ, tích hợp full Task CRUD từ Calendar, hỗ trợ nút "Hôm nay" và chuyển tháng linh hoạt.
+* **Phase 4**: Tích hợp Local Notifications nhắc giờ công việc trên Android và Windows.
+* **Phase 5**: Hoàn thiện chế độ Tập trung (Pomodoro Timer) và Biểu đồ Thống kê Năng suất.
+* **Phase 6**: Backend API, Google Login, Đồng bộ dữ liệu Cloud Sync cho tài khoản TIMEFLOW Plus và Hệ thống Admin.
 

@@ -6,8 +6,9 @@ import '../providers/task_providers.dart';
 
 class TaskFormDialog extends ConsumerStatefulWidget {
   final TaskEntity? taskToEdit;
+  final DateTime? initialDueDate;
 
-  const TaskFormDialog({super.key, this.taskToEdit});
+  const TaskFormDialog({super.key, this.taskToEdit, this.initialDueDate});
 
   @override
   ConsumerState<TaskFormDialog> createState() => _TaskFormDialogState();
@@ -38,7 +39,11 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
       text: edit?.description ?? '',
     );
 
-    _selectedDate = edit?.dueDate ?? edit?.startTime ?? DateTime.now();
+    _selectedDate =
+        edit?.dueDate ??
+        edit?.startTime ??
+        widget.initialDueDate ??
+        DateTime.now();
     _startTime = edit?.startTime != null
         ? TimeOfDay.fromDateTime(edit!.startTime!)
         : const TimeOfDay(hour: 9, minute: 0);

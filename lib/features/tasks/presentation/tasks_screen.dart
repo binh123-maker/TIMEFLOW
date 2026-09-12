@@ -110,7 +110,8 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                 return ListView.separated(
                   padding: const EdgeInsets.all(16.0),
                   itemCount: filtered.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final task = filtered[index];
                     return _buildTaskTile(context, task);
