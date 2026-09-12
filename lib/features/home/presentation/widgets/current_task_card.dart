@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../data/models/task_model.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/date_formatter.dart';
+import '../../../tasks/domain/entities/task_entity.dart';
 
 class CurrentTaskCard extends StatelessWidget {
-  final TaskModel? task;
+  final TaskEntity? task;
 
   const CurrentTaskCard({super.key, required this.task});
 
@@ -16,14 +16,18 @@ class CurrentTaskCard extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Row(
             children: [
-              const Icon(Icons.check_circle_outline, size: 36, color: AppColors.success),
+              const Icon(
+                Icons.check_circle_outline,
+                size: 36,
+                color: AppColors.success,
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hiện không có công việc đang diễn ra',
+                      'Không có công việc đang diễn ra',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 4),
@@ -40,7 +44,10 @@ class CurrentTaskCard extends StatelessWidget {
       );
     }
 
-    final timeStr = DateFormatter.formatTimeRange(task!.startTime, task!.endTime);
+    String timeStr = 'Cả ngày';
+    if (task!.startTime != null && task!.endTime != null) {
+      timeStr = DateFormatter.formatTimeRange(task!.startTime!, task!.endTime!);
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -63,7 +70,10 @@ class CurrentTaskCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(51),
                     borderRadius: BorderRadius.circular(12),
@@ -104,18 +114,15 @@ class CurrentTaskCard extends StatelessWidget {
             Text(
               task!.title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             if (task!.description != null && task!.description!.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
                 task!.description!,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 13,
-                ),
+                style: const TextStyle(color: Colors.white70, fontSize: 13),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -124,9 +131,12 @@ class CurrentTaskCard extends StatelessWidget {
             Row(
               children: [
                 Chip(
-                  label: Text(task!.category),
+                  label: Text('Mức ưu tiên: ${task!.priority.displayName}'),
                   backgroundColor: Colors.white.withAlpha(51),
-                  labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
+                  labelStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
                   side: BorderSide.none,
                   padding: EdgeInsets.zero,
                 ),

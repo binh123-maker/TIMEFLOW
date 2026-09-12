@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 
-enum TaskStatus {
-  upcoming,
-  inProgress,
-  completed,
-}
+enum TaskStatus { upcoming, inProgress, completed }
 
-enum TaskPriority {
-  low,
-  medium,
-  high,
-}
+enum TaskPriority { low, medium, high }
 
 /// Data model representing a Task / Event in TIMEFLOW
 class TaskModel {

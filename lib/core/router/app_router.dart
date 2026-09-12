@@ -13,7 +13,9 @@ import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
 /// App Router Configuration using GoRouter with StatefulShellRoute
 final GoRouter appRouter = GoRouter(
@@ -72,10 +74,7 @@ final GoRouter appRouter = GoRouter(
       path: '/reminders',
       builder: (context, state) => const RemindersScreen(),
     ),
-    GoRoute(
-      path: '/focus',
-      builder: (context, state) => const FocusScreen(),
-    ),
+    GoRoute(path: '/focus', builder: (context, state) => const FocusScreen()),
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),

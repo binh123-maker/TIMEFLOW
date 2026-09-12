@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/date_formatter.dart';
-import '../providers/today_schedule_provider.dart';
+import '../../tasks/presentation/providers/task_providers.dart';
+
 import 'widgets/current_task_card.dart';
 import 'widgets/next_task_card.dart';
 import 'widgets/timeline_schedule_widget.dart';
 
-/// Home / Today Screen
+/// Home / Today Screen connected to SQLite Database via Riverpod Streams
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final liveClockAsync = ref.watch(liveClockProvider);
-    final currentTaskAsync = ref.watch(currentTaskProvider);
-    final nextTaskAsync = ref.watch(nextTaskProvider);
-    final todayTasksAsync = ref.watch(todayTasksProvider);
+    final currentTaskAsync = ref.watch(currentTaskStreamProvider);
+    final nextTaskAsync = ref.watch(nextTaskStreamProvider);
+    final todayTasksAsync = ref.watch(todayTasksStreamProvider);
 
-    final now = liveClockAsync.value ?? DateTime.now();
+    final now = DateTime.now();
     final dateFormatted = DateFormatter.formatHeaderDate(now);
     final timeFormatted = DateFormatter.formatTime(now);
 
@@ -39,9 +39,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          ref.invalidate(todayTasksProvider);
-          ref.invalidate(currentTaskProvider);
-          ref.invalidate(nextTaskProvider);
+          ref.invalidate(allTasksStreamProvider);
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -60,9 +58,8 @@ class HomeScreen extends ConsumerWidget {
                       children: [
                         Text(
                           dateFormatted,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -73,7 +70,10 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(12),
@@ -81,10 +81,10 @@ class HomeScreen extends ConsumerWidget {
                     child: Text(
                       timeFormatted,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.w800,
-                            fontFeatures: const [FontFeature.tabularFigures()],
-                          ),
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w800,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
                     ),
                   ),
                 ],
@@ -100,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
               currentTaskAsync.when(
                 data: (task) => CurrentTaskCard(task: task),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, _) => Text('Lỗi: $err'),
+                error: (err, stack) => Text('Đã xảy ra lỗi: $err'),
               ),
               const SizedBox(height: 20),
 
@@ -125,20 +125,15 @@ class HomeScreen extends ConsumerWidget {
                     'Lịch trình trong ngày',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.tune_rounded, size: 18),
-                    label: const Text('Lọc'),
-                  ),
                 ],
               ),
               const SizedBox(height: 12),
               todayTasksAsync.when(
                 data: (tasks) => TimelineScheduleWidget(tasks: tasks),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, _) => Text('Lỗi tải danh sách: $err'),
+                error: (err, stack) => Text('Đã xảy ra lỗi: $err'),
               ),
-              const SizedBox(height: 80), // Padding for FloatingActionButton / BottomNav
+              const SizedBox(height: 80),
             ],
           ),
         ),

@@ -9,11 +9,7 @@ import 'core/theme/theme_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const ProviderScope(
-      child: TimeFlowApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: TimeFlowApp()));
 }
 
 class TimeFlowApp extends ConsumerWidget {
@@ -35,10 +31,7 @@ class TimeFlowApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('vi', 'VN'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('vi', 'VN'), Locale('en', 'US')],
     );
   }
 }

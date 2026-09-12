@@ -86,39 +86,40 @@ lib/
 * Flutter SDK (phiên bản >= 3.19.0)
 * Dart SDK (phiên bản >= 3.3.0)
 
-### Cài đặt thư viện
+### Cài đặt thư viện & Sinh mã Drift Database
 ```bash
 flutter pub get
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Kiểm tra mã nguồn (Static Analysis)
+### Format code & Kiểm tra mã nguồn
 ```bash
+dart format lib test
 flutter analyze
+```
+
+### Chạy Unit & Database Tests
+```bash
+flutter test
 ```
 
 ### Chạy ứng dụng trên Android
 ```bash
 flutter run -d android
 ```
-Hoặc build APK debug:
-```bash
-flutter build apk --debug
-```
 
 ### Chạy ứng dụng trên Windows Desktop
 ```bash
 flutter run -d windows
-```
-Hoặc build ứng dụng Windows:
-```bash
-flutter build windows
 ```
 
 ---
 
 ## 6. CÁC PHASE PHÁT TRIỂN TIẾP THEO
 
-* **Phase 2**: Cấu trúc Local Database với Drift / SQLite, hoàn thiện Task CRUD (Tạo, Sửa, Xóa, Đánh dấu hoàn thành) và lưu trữ trực tiếp trên thiết bị.
+* **Phase 1 (HOÀN THÀNH)**: Khởi tạo dự án, kiến trúc Clean Architecture + Riverpod + GoRouter, Material 3 Light/Dark theme, Responsive layout Mobile/Desktop.
+* **Phase 2 (HOÀN THÀNH)**: Tích hợp Local Database bằng Drift & SQLite (`timeflow.sqlite`), hoàn thiện Task CRUD (Create, Watch Stream, Update, Delete, Toggle Completion), Title & Time Validation, kết nối dữ liệu thật cho Home Screen và Tasks Screen.
 * **Phase 3**: Tích hợp Local Notifications nhắc giờ công việc trên Android và Windows.
 * **Phase 4**: Hoàn thiện chế độ Tập trung (Pomodoro Timer) và Biểu đồ Thống kê Năng suất.
 * **Phase 5**: Backend API, Google Login, Đồng bộ dữ liệu Cloud Sync cho tài khoản TIMEFLOW Plus và Hệ thống Admin.
+

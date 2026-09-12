@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timeflow/core/utils/date_formatter.dart';
-import 'package:timeflow/data/repositories/task_repository.dart';
+import 'package:timeflow/features/tasks/domain/entities/task_entity.dart';
 
 void main() {
   group('TIMEFLOW Core Unit Tests', () {
@@ -11,20 +11,19 @@ void main() {
       expect(formatted, contains('12 tháng 09, 2026'));
     });
 
-    test('MockTaskRepository returns today schedule items', () async {
-      final repository = MockTaskRepository();
-      final tasks = await repository.getTodayTasks();
+    test('TaskEntity status and priority display names in Vietnamese', () {
+      final now = DateTime.now();
+      final task = TaskEntity(
+        id: 'test-1',
+        title: 'Thử nghiệm entity',
+        status: TaskStatus.inProgress,
+        priority: TaskPriority.high,
+        createdAt: now,
+        updatedAt: now,
+      );
 
-      expect(tasks, isNotEmpty);
-      expect(tasks.length, equals(4));
-    });
-
-    test('MockTaskRepository identifies current in-progress task', () async {
-      final repository = MockTaskRepository();
-      final currentTask = await repository.getCurrentTask();
-
-      expect(currentTask, isNotNull);
-      expect(currentTask?.title, contains('TIMEFLOW'));
+      expect(task.status.displayName, equals('Đang làm'));
+      expect(task.priority.displayName, equals('Cao'));
     });
   });
 }

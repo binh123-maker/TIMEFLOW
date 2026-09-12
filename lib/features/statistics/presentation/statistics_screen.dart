@@ -6,9 +6,7 @@ class StatisticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Thống kê năng suất'),
-      ),
+      appBar: AppBar(title: const Text('Thống kê năng suất')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../data/models/task_model.dart';
 import '../../../../core/utils/date_formatter.dart';
+import '../../../tasks/domain/entities/task_entity.dart';
 
 class NextTaskCard extends StatelessWidget {
-  final TaskModel? task;
+  final TaskEntity? task;
 
   const NextTaskCard({super.key, required this.task});
 
@@ -23,7 +23,7 @@ class NextTaskCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Không có công việc tiếp theo trong hôm nay',
+                  'Không có công việc tiếp theo',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -33,7 +33,12 @@ class NextTaskCard extends StatelessWidget {
       );
     }
 
-    final timeStr = DateFormatter.formatTimeRange(task!.startTime, task!.endTime);
+    String timeStr = 'Chưa đặt giờ';
+    if (task!.startTime != null && task!.endTime != null) {
+      timeStr = DateFormatter.formatTimeRange(task!.startTime!, task!.endTime!);
+    } else if (task!.startTime != null) {
+      timeStr = DateFormatter.formatTime(task!.startTime!);
+    }
 
     return Card(
       child: Padding(
@@ -43,12 +48,12 @@ class NextTaskCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: task!.categoryColor.withAlpha(38),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 Icons.schedule_rounded,
-                color: task!.categoryColor,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 size: 24,
               ),
             ),
@@ -63,16 +68,16 @@ class NextTaskCard extends StatelessWidget {
                       Text(
                         'CÔNG VIỆC TIẾP THEO',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
-                              letterSpacing: 0.5,
-                            ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                       Text(
                         timeStr,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/theme_provider.dart';
+import '../../tasks/presentation/widgets/task_form_dialog.dart';
 
 /// Root Shell Layout supporting Responsive UI:
 /// - Mobile (<768px): Material 3 Bottom NavigationBar
@@ -10,10 +11,7 @@ import '../../../core/theme/theme_provider.dart';
 class MainLayoutScreen extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
 
-  const MainLayoutScreen({
-    super.key,
-    required this.navigationShell,
-  });
+  const MainLayoutScreen({super.key, required this.navigationShell});
 
   void _onDestinationSelected(int index) {
     navigationShell.goBranch(
@@ -39,7 +37,10 @@ class MainLayoutScreen extends ConsumerWidget {
               extended: screenWidth >= AppConstants.kTabletBreakpoint,
               minExtendedWidth: 200,
               leading: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 8.0,
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -60,9 +61,9 @@ class MainLayoutScreen extends ConsumerWidget {
                       Text(
                         AppConstants.appName,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.0,
-                            ),
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.0,
+                        ),
                       ),
                     ],
                   ],
@@ -77,9 +78,13 @@ class MainLayoutScreen extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          tooltip: themeMode == ThemeMode.dark ? 'Chuyển Chế độ Sáng' : 'Chuyển Chế độ Tối',
+                          tooltip: themeMode == ThemeMode.dark
+                              ? 'Chuyển Chế độ Sáng'
+                              : 'Chuyển Chế độ Tối',
                           icon: Icon(
-                            themeMode == ThemeMode.dark ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+                            themeMode == ThemeMode.dark
+                                ? Icons.wb_sunny_rounded
+                                : Icons.nightlight_round,
                           ),
                           onPressed: () {
                             ref.read(themeModeProvider.notifier).toggleTheme();
@@ -121,9 +126,7 @@ class MainLayoutScreen extends ConsumerWidget {
             ),
             const VerticalDivider(thickness: 1, width: 1),
             // Right Main Content Pane
-            Expanded(
-              child: navigationShell,
-            ),
+            Expanded(child: navigationShell),
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -172,72 +175,6 @@ class MainLayoutScreen extends ConsumerWidget {
   }
 
   void _showAddTaskModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => Padding(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Thêm công việc mới',
-                  style: Theme.of(ctx).textTheme.titleLarge,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close_rounded),
-                  onPressed: () => Navigator.pop(ctx),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Tên công việc',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.task_alt_rounded),
-              ),
-            ),
-            const SizedBox(height: 12),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Mô tả ngắn (tùy chọn)',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.notes_rounded),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Tính năng tạo công việc sẽ hoàn thiện ở Phase tiếp theo!'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.check_rounded),
-                label: const Text('Lưu công việc'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    showDialog(context: context, builder: (ctx) => const TaskFormDialog());
   }
 }

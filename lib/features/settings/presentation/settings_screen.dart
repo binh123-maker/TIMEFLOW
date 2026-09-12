@@ -10,18 +10,16 @@ class SettingsScreen extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cài đặt'),
-      ),
+      appBar: AppBar(title: const Text('Cài đặt')),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           Text(
             'Giao diện',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
           Card(
@@ -54,9 +52,9 @@ class SettingsScreen extends ConsumerWidget {
           Text(
             'Thông tin ứng dụng',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
           const Card(

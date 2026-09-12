@@ -6,18 +6,12 @@ class SubscriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TIMEFLOW Plus'),
-      ),
+      appBar: AppBar(title: const Text('TIMEFLOW Plus')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.star_rounded,
-              size: 64,
-              color: Colors.amber.shade600,
-            ),
+            Icon(Icons.star_rounded, size: 64, color: Colors.amber.shade600),
             const SizedBox(height: 16),
             Text(
               'Gói TIMEFLOW Plus',

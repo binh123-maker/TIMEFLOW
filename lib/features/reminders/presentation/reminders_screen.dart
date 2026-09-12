@@ -6,9 +6,7 @@ class RemindersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nhắc nhở'),
-      ),
+      appBar: AppBar(title: const Text('Nhắc nhở')),
       body: Center(
         child: Text(
           'Màn hình Nhắc nhở',

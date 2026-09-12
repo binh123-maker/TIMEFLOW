@@ -6,9 +6,7 @@ class TimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Lịch trình chi tiết'),
-      ),
+      appBar: AppBar(title: const Text('Lịch trình chi tiết')),
       body: Center(
         child: Text(
           'Màn hình Timeline',

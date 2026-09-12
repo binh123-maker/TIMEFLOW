@@ -6,9 +6,7 @@ class FocusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chế độ Tập trung'),
-      ),
+      appBar: AppBar(title: const Text('Chế độ Tập trung')),
       body: Center(
         child: Text(
           'Màn hình Tập trung (Pomodoro / Timer)',

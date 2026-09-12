@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../../data/models/task_model.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/date_formatter.dart';
+import '../../../tasks/domain/entities/task_entity.dart';
 
 class TimelineScheduleWidget extends StatelessWidget {
-  final List<TaskModel> tasks;
+  final List<TaskEntity> tasks;
 
   const TimelineScheduleWidget({super.key, required this.tasks});
 
@@ -16,7 +17,7 @@ class TimelineScheduleWidget extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           child: Center(
             child: Text(
-              'Chưa có lịch trình nào cho hôm nay.',
+              'Chưa có lịch trình hôm nay.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
@@ -31,7 +32,17 @@ class TimelineScheduleWidget extends StatelessWidget {
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final task = tasks[index];
-        final timeStr = DateFormatter.formatTimeRange(task.startTime, task.endTime);
+        String timeStr = 'Cả ngày';
+        if (task.startTime != null && task.endTime != null) {
+          timeStr = DateFormatter.formatTimeRange(
+            task.startTime!,
+            task.endTime!,
+          );
+        } else if (task.startTime != null) {
+          timeStr = DateFormatter.formatTime(task.startTime!);
+        } else if (task.dueDate != null) {
+          timeStr = DateFormat('HH:mm dd/MM', 'vi').format(task.dueDate!);
+        }
 
         return Card(
           child: Padding(
@@ -39,12 +50,12 @@ class TimelineScheduleWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Category Color Line Accent
+                // Priority Accent Bar
                 Container(
                   width: 4,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: task.categoryColor,
+                    color: _getPriorityColor(task.priority),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -58,7 +69,8 @@ class TimelineScheduleWidget extends StatelessWidget {
                         children: [
                           Text(
                             timeStr,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -69,13 +81,15 @@ class TimelineScheduleWidget extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         task.title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              decoration: task.status == TaskStatus.completed
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              decoration: task.isCompleted
                                   ? TextDecoration.lineThrough
                                   : null,
                             ),
                       ),
-                      if (task.description != null && task.description!.isNotEmpty) ...[
+                      if (task.description != null &&
+                          task.description!.isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Text(
                           task.description!,
@@ -95,27 +109,28 @@ class TimelineScheduleWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(BuildContext context, TaskStatus status) {
-    String text;
-    Color bg;
-    Color fg;
+  Color _getPriorityColor(TaskPriority priority) {
+    switch (priority) {
+      case TaskPriority.urgent:
+      case TaskPriority.high:
+        return AppColors.error;
+      case TaskPriority.medium:
+        return AppColors.warning;
+      case TaskPriority.low:
+        return AppColors.success;
+    }
+  }
 
-    switch (status) {
-      case TaskStatus.completed:
-        text = 'Đã xong';
-        bg = AppColors.success.withAlpha(38);
-        fg = AppColors.success;
-        break;
-      case TaskStatus.inProgress:
-        text = 'Đang làm';
-        bg = AppColors.primary.withAlpha(38);
-        fg = AppColors.primary;
-        break;
-      case TaskStatus.upcoming:
-        text = 'Sắp tới';
-        bg = Theme.of(context).colorScheme.surfaceContainerHighest;
-        fg = Theme.of(context).colorScheme.onSurfaceVariant;
-        break;
+  Widget _buildStatusBadge(BuildContext context, TaskStatus status) {
+    Color bg = Theme.of(context).colorScheme.surfaceContainerHighest;
+    Color fg = Theme.of(context).colorScheme.onSurfaceVariant;
+
+    if (status == TaskStatus.completed) {
+      bg = AppColors.success.withAlpha(38);
+      fg = AppColors.success;
+    } else if (status == TaskStatus.inProgress) {
+      bg = AppColors.primary.withAlpha(38);
+      fg = AppColors.primary;
     }
 
     return Container(
@@ -125,12 +140,8 @@ class TimelineScheduleWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        text,
-        style: TextStyle(
-          color: fg,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-        ),
+        status.displayName,
+        style: TextStyle(color: fg, fontSize: 11, fontWeight: FontWeight.w600),
       ),
     );
   }

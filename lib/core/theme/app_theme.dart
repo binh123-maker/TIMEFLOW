@@ -71,7 +71,9 @@ class AppTheme {
         backgroundColor: AppColors.lightSurface,
         indicatorColor: AppColors.primary.withAlpha(38),
         selectedIconTheme: const IconThemeData(color: AppColors.primary),
-        unselectedIconTheme: const IconThemeData(color: AppColors.lightTextSecondary),
+        unselectedIconTheme: const IconThemeData(
+          color: AppColors.lightTextSecondary,
+        ),
         selectedLabelTextStyle: GoogleFonts.inter(
           fontSize: 13,
           fontWeight: FontWeight.w600,
@@ -126,7 +128,9 @@ class AppTheme {
 
   /// Dark Theme Configuration
   static ThemeData get darkTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+    final baseTextTheme = GoogleFonts.interTextTheme(
+      ThemeData.dark().textTheme,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -189,7 +193,9 @@ class AppTheme {
         backgroundColor: AppColors.darkSurface,
         indicatorColor: AppColors.primaryLight.withAlpha(51),
         selectedIconTheme: const IconThemeData(color: AppColors.primaryLight),
-        unselectedIconTheme: const IconThemeData(color: AppColors.darkTextSecondary),
+        unselectedIconTheme: const IconThemeData(
+          color: AppColors.darkTextSecondary,
+        ),
         selectedLabelTextStyle: GoogleFonts.inter(
           fontSize: 13,
           fontWeight: FontWeight.w600,

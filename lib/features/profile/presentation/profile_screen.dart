@@ -6,9 +6,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hồ sơ người dùng'),
-      ),
+      appBar: AppBar(title: const Text('Hồ sơ người dùng')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
