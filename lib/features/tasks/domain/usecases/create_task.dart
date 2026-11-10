@@ -17,6 +17,8 @@ class CreateTask {
     DateTime? startTime,
     DateTime? endTime,
     bool isCompleted = false,
+    bool reminderEnabled = false,
+    int reminderMinutesBefore = 0,
   }) async {
     final trimmedTitle = title.trim();
     if (trimmedTitle.isEmpty) {
@@ -25,6 +27,17 @@ class CreateTask {
 
     if (startTime != null && endTime != null && !startTime.isBefore(endTime)) {
       throw ArgumentError('Thời gian bắt đầu phải trước thời gian kết thúc.');
+    }
+
+    if (reminderEnabled) {
+      if (startTime == null) {
+        throw ArgumentError(
+          'Task cần có ngày và thời gian bắt đầu để sử dụng nhắc nhở.',
+        );
+      }
+      if (reminderMinutesBefore < 0) {
+        throw ArgumentError('Thời gian nhắc nhở không hợp lệ.');
+      }
     }
 
     final now = DateTime.now();
@@ -40,6 +53,8 @@ class CreateTask {
       startTime: startTime,
       endTime: endTime,
       isCompleted: isCompleted,
+      reminderEnabled: reminderEnabled,
+      reminderMinutesBefore: reminderMinutesBefore,
       createdAt: now,
       updatedAt: now,
     );

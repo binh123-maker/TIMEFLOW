@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../constants/app_constants.dart';
+import '../storage/local_storage.dart';
 
-/// StateNotifier to manage ThemeMode (System, Light, Dark)
+/// StateNotifier to manage ThemeMode (System, Light, Dark) with persistence
 class ThemeNotifier extends StateNotifier<ThemeMode> {
-  ThemeNotifier() : super(ThemeMode.system);
+  final LocalStorage? _storage;
 
-  void setThemeMode(ThemeMode mode) {
-    state = mode;
+  ThemeNotifier([this._storage]) : super(_initialThemeMode(_storage));
+
+  static ThemeMode _initialThemeMode(LocalStorage? storage) {
+    if (storage == null) return ThemeMode.system;
+    final savedMode = storage.getString(AppConstants.keyThemeMode);
+    if (savedMode == null) return ThemeMode.system;
+    switch (savedMode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return ThemeMode.system;
+    }
   }
 
-  void toggleTheme() {
+  Future<void> setThemeMode(ThemeMode mode) async {
+    state = mode;
+    if (_storage != null) {
+      await _storage.setString(AppConstants.keyThemeMode, mode.name);
+    }
+  }
+
+  Future<void> toggleTheme() async {
     if (state == ThemeMode.dark) {
-      state = ThemeMode.light;
+      await setThemeMode(ThemeMode.light);
     } else {
-      state = ThemeMode.dark;
+      await setThemeMode(ThemeMode.dark);
     }
   }
 }
@@ -22,5 +44,6 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 final themeModeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((
   ref,
 ) {
-  return ThemeNotifier();
+  final storage = ref.watch(localStorageProvider);
+  return ThemeNotifier(storage);
 });

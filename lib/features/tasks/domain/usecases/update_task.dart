@@ -18,6 +18,17 @@ class UpdateTask {
       throw ArgumentError('Thời gian bắt đầu phải trước thời gian kết thúc.');
     }
 
+    if (task.reminderEnabled) {
+      if (task.startTime == null) {
+        throw ArgumentError(
+          'Task cần có ngày và thời gian bắt đầu để sử dụng nhắc nhở.',
+        );
+      }
+      if (task.reminderMinutesBefore < 0) {
+        throw ArgumentError('Thời gian nhắc nhở không hợp lệ.');
+      }
+    }
+
     final updatedTask = task.copyWith(
       title: trimmedTitle,
       description: task.description?.trim().isEmpty == true

@@ -75,6 +75,8 @@ class TaskRepositoryImpl implements ITaskRepository {
       startTime: row.startTime,
       endTime: row.endTime,
       isCompleted: row.isCompleted,
+      reminderEnabled: row.reminderEnabled,
+      reminderMinutesBefore: row.reminderMinutesBefore,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     );
@@ -91,6 +93,8 @@ class TaskRepositoryImpl implements ITaskRepository {
       startTime: Value(entity.startTime),
       endTime: Value(entity.endTime),
       isCompleted: Value(entity.isCompleted),
+      reminderEnabled: Value(entity.reminderEnabled),
+      reminderMinutesBefore: Value(entity.reminderMinutesBefore),
       createdAt: Value(entity.createdAt),
       updatedAt: Value(entity.updatedAt),
     );

@@ -14,7 +14,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -23,7 +23,10 @@ class AppDatabase extends _$AppDatabase {
         await m.createAll();
       },
       onUpgrade: (m, from, to) async {
-        // Future schema migrations (e.g. 1 -> 2) will be defined here safely
+        if (from < 2) {
+          await m.addColumn(tasks, tasks.reminderEnabled);
+          await m.addColumn(tasks, tasks.reminderMinutesBefore);
+        }
       },
     );
   }

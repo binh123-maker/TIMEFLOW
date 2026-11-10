@@ -63,6 +63,8 @@ class TaskEntity {
   final DateTime? startTime;
   final DateTime? endTime;
   final bool isCompleted;
+  final bool reminderEnabled;
+  final int reminderMinutesBefore;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -76,9 +78,17 @@ class TaskEntity {
     this.startTime,
     this.endTime,
     this.isCompleted = false,
+    this.reminderEnabled = false,
+    this.reminderMinutesBefore = 0,
     required this.createdAt,
     required this.updatedAt,
   });
+
+  /// Calculate exact scheduled reminder DateTime based on startTime and offset
+  DateTime? get calculatedReminderTime {
+    if (!reminderEnabled || startTime == null) return null;
+    return startTime!.subtract(Duration(minutes: reminderMinutesBefore));
+  }
 
   TaskEntity copyWith({
     String? id,
@@ -90,6 +100,8 @@ class TaskEntity {
     DateTime? startTime,
     DateTime? endTime,
     bool? isCompleted,
+    bool? reminderEnabled,
+    int? reminderMinutesBefore,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -103,6 +115,9 @@ class TaskEntity {
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       isCompleted: isCompleted ?? this.isCompleted,
+      reminderEnabled: reminderEnabled ?? this.reminderEnabled,
+      reminderMinutesBefore:
+          reminderMinutesBefore ?? this.reminderMinutesBefore,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

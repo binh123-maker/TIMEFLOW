@@ -160,10 +160,19 @@ class CalendarTaskList extends ConsumerWidget {
                 ),
                 const SizedBox(width: 10),
                 _buildPriorityBadge(task.priority),
+                if (task.reminderEnabled) ...[
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.notifications_outlined,
+                    size: 14,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ],
               ],
             ),
           ],
         ),
+
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

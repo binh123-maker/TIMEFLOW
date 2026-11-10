@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/notifications/reminder_offset.dart';
 import '../../domain/entities/task_entity.dart';
 import '../providers/task_providers.dart';
 
@@ -25,6 +26,7 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
   TimeOfDay? _endTime;
   late TaskPriority _priority;
   late TaskStatus _status;
+  late ReminderOffset _reminderOffset;
 
   String? _errorMessage;
   bool _isSubmitting = false;
@@ -53,6 +55,10 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
 
     _priority = edit?.priority ?? TaskPriority.medium;
     _status = edit?.status ?? TaskStatus.pending;
+    _reminderOffset = ReminderOffset.fromValues(
+      enabled: edit?.reminderEnabled ?? false,
+      minutesBefore: edit?.reminderMinutesBefore ?? 0,
+    );
   }
 
   @override
@@ -159,6 +165,8 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
           dueDate: _selectedDate,
           startTime: fullStart,
           endTime: fullEnd,
+          reminderEnabled: fullStart != null && _reminderOffset.isEnabled,
+          reminderMinutesBefore: _reminderOffset.minutes,
         );
       } else {
         // Update Task
@@ -172,6 +180,8 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
           startTime: fullStart,
           endTime: fullEnd,
           isCompleted: _status == TaskStatus.completed,
+          reminderEnabled: fullStart != null && _reminderOffset.isEnabled,
+          reminderMinutesBefore: _reminderOffset.minutes,
         );
         await updateTask(updated);
       }
@@ -353,7 +363,40 @@ class _TaskFormDialogState extends ConsumerState<TaskFormDialog> {
                     if (val != null) setState(() => _status = val);
                   },
                 ),
+                const SizedBox(height: 14),
+                // Reminder Dropdown
+                DropdownButtonFormField<ReminderOffset>(
+                  initialValue: _startTime == null
+                      ? ReminderOffset.none
+                      : _reminderOffset,
+                  decoration: InputDecoration(
+                    labelText: 'Nhắc nhở',
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.notifications_active_rounded),
+                    helperText: _startTime == null
+                        ? 'Task cần có ngày + thời gian bắt đầu để sử dụng nhắc nhở.'
+                        : null,
+                    helperStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: 12,
+                    ),
+                  ),
+                  items: ReminderOffset.values.map((r) {
+                    return DropdownMenuItem(
+                      value: r,
+                      child: Text(r.displayName),
+                    );
+                  }).toList(),
+                  onChanged: _startTime == null
+                      ? null
+                      : (val) {
+                          if (val != null) {
+                            setState(() => _reminderOffset = val);
+                          }
+                        },
+                ),
                 const SizedBox(height: 24),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

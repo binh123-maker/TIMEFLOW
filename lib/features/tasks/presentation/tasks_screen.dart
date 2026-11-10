@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/notifications/reminder_offset.dart';
 import '../domain/entities/task_entity.dart';
 import 'providers/task_providers.dart';
 import 'widgets/task_form_dialog.dart';
@@ -234,10 +235,12 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                   ),
                 _buildPriorityBadge(task.priority),
                 _buildStatusBadge(context, task.status),
+                if (task.reminderEnabled) _buildReminderBadge(context, task),
               ],
             ),
           ],
         ),
+
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -311,6 +314,38 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       child: Text(
         status.displayName,
         style: TextStyle(color: fg, fontSize: 10, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget _buildReminderBadge(BuildContext context, TaskEntity task) {
+    final offset = ReminderOffset.fromValues(
+      enabled: task.reminderEnabled,
+      minutesBefore: task.reminderMinutesBefore,
+    );
+    final color = Theme.of(context).colorScheme.tertiary;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withAlpha(30),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withAlpha(90), width: 0.8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.notifications_outlined, size: 12, color: color),
+          const SizedBox(width: 3),
+          Text(
+            offset.displayName,
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

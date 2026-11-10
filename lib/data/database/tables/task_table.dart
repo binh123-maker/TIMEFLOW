@@ -11,6 +11,10 @@ class Tasks extends Table {
   DateTimeColumn get startTime => dateTime().nullable()();
   DateTimeColumn get endTime => dateTime().nullable()();
   BoolColumn get isCompleted => boolean().withDefault(const Constant(false))();
+  BoolColumn get reminderEnabled =>
+      boolean().withDefault(const Constant(false))();
+  IntColumn get reminderMinutesBefore =>
+      integer().withDefault(const Constant(0))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
