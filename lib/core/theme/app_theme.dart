@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 
 /// TIMEFLOW Material 3 Design System - Light & Dark Themes
+/// Offline-first typography utilizing bundled Inter fonts
 class AppTheme {
   AppTheme._();
 
+  static const String fontFamily = 'Inter';
+
   /// Light Theme Configuration
   static ThemeData get lightTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme();
-
     return ThemeData(
       useMaterial3: true,
+      fontFamily: fontFamily,
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
@@ -29,12 +30,13 @@ class AppTheme {
         onError: Colors.white,
       ),
       scaffoldBackgroundColor: AppColors.lightBackground,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         centerTitle: false,
         elevation: 0,
         backgroundColor: AppColors.lightBackground,
         foregroundColor: AppColors.lightTextPrimary,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: AppColors.lightTextPrimary,
@@ -54,13 +56,15 @@ class AppTheme {
         indicatorColor: AppColors.primary.withAlpha(38),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return const TextStyle(
+              fontFamily: fontFamily,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.primary,
             );
           }
-          return GoogleFonts.inter(
+          return const TextStyle(
+            fontFamily: fontFamily,
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: AppColors.lightTextSecondary,
@@ -74,44 +78,52 @@ class AppTheme {
         unselectedIconTheme: const IconThemeData(
           color: AppColors.lightTextSecondary,
         ),
-        selectedLabelTextStyle: GoogleFonts.inter(
+        selectedLabelTextStyle: const TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: AppColors.primary,
         ),
-        unselectedLabelTextStyle: GoogleFonts.inter(
+        unselectedLabelTextStyle: const TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w500,
           color: AppColors.lightTextSecondary,
         ),
       ),
-      textTheme: baseTextTheme.copyWith(
-        headlineLarge: GoogleFonts.inter(
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 28,
           fontWeight: FontWeight.w800,
           color: AppColors.lightTextPrimary,
         ),
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: AppColors.lightTextPrimary,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           color: AppColors.lightTextPrimary,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: AppColors.lightTextPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 15,
           fontWeight: FontWeight.w400,
           color: AppColors.lightTextPrimary,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w400,
           color: AppColors.lightTextSecondary,
@@ -128,12 +140,9 @@ class AppTheme {
 
   /// Dark Theme Configuration
   static ThemeData get darkTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme(
-      ThemeData.dark().textTheme,
-    );
-
     return ThemeData(
       useMaterial3: true,
+      fontFamily: fontFamily,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryLight,
@@ -151,12 +160,13 @@ class AppTheme {
         onError: Colors.white,
       ),
       scaffoldBackgroundColor: AppColors.darkBackground,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         centerTitle: false,
         elevation: 0,
         backgroundColor: AppColors.darkBackground,
         foregroundColor: AppColors.darkTextPrimary,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: AppColors.darkTextPrimary,
@@ -176,13 +186,15 @@ class AppTheme {
         indicatorColor: AppColors.primaryLight.withAlpha(51),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return const TextStyle(
+              fontFamily: fontFamily,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.primaryLight,
             );
           }
-          return GoogleFonts.inter(
+          return const TextStyle(
+            fontFamily: fontFamily,
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: AppColors.darkTextSecondary,
@@ -196,44 +208,52 @@ class AppTheme {
         unselectedIconTheme: const IconThemeData(
           color: AppColors.darkTextSecondary,
         ),
-        selectedLabelTextStyle: GoogleFonts.inter(
+        selectedLabelTextStyle: const TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: AppColors.primaryLight,
         ),
-        unselectedLabelTextStyle: GoogleFonts.inter(
+        unselectedLabelTextStyle: const TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w500,
           color: AppColors.darkTextSecondary,
         ),
       ),
-      textTheme: baseTextTheme.copyWith(
-        headlineLarge: GoogleFonts.inter(
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 28,
           fontWeight: FontWeight.w800,
           color: AppColors.darkTextPrimary,
         ),
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: AppColors.darkTextPrimary,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           color: AppColors.darkTextPrimary,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: AppColors.darkTextPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 15,
           fontWeight: FontWeight.w400,
           color: AppColors.darkTextPrimary,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: TextStyle(
+          fontFamily: fontFamily,
           fontSize: 13,
           fontWeight: FontWeight.w400,
           color: AppColors.darkTextSecondary,
