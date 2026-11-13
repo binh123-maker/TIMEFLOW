@@ -1,0 +1,9 @@
+Initial release of TIMEFLOW:
+- Offline-first Task CRUD backed by local SQLite database.
+- Real-time Lockscreen Ongoing Schedule Notification.
+- Compact (2x1) and Expanded (4x2) Android Home Screen Widgets.
+- Exact task reminder notifications with reboot recovery.
+- Calendar monthly planning grid with task density dots.
+- Material 3 Light and Dark themes with offline Inter typography.
+- Fully open-source under GNU GPLv3 with zero trackers and zero ads.
+

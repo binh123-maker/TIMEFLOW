@@ -1,0 +1,21 @@
+# TIMEFLOW Android Release Signing Configuration Template
+# -----------------------------------------------------------------------------
+# SECURITY WARNING:
+# NEVER commit your real key.properties or keystore (.jks/.keystore) to Git!
+# This file is a template. Copy it to "android/key.properties" and fill in your values.
+#
+# When building for GitHub Releases or IzzyOnDroid:
+# 1. Generate an upload keystore:
+#    keytool -genkey -v -keystore timeflow-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias timeflow
+# 2. Place "key.properties" in the "android/" directory with your credentials.
+#
+# When building on F-Droid:
+# F-Droid builds from source and uses its own signing server keys.
+# If key.properties is absent, Gradle produces an unsigned release APK.
+# -----------------------------------------------------------------------------
+
+storeFile=timeflow-release.jks
+storePassword=
+keyAlias=timeflow
+keyPassword=
+

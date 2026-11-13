@@ -63,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                 ListTile(
                   leading: Icon(Icons.info_outline_rounded),
                   title: Text('TIMEFLOW'),
-                  subtitle: Text('Phiên bản 1.0.0 (Phase 1 Init)'),
+                  subtitle: Text('Phiên bản 0.6.2 (Sprint 6.2)'),
                 ),
                 Divider(height: 1),
                 ListTile(

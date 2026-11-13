@@ -27,9 +27,11 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+.dart_local/
 /build/
 /coverage/
 
@@ -43,3 +45,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Android signing files & keys
+key.properties
+*.jks
+*.keystore
+
+# Private keys and certificates
+*.pem
+*.key
+
+# Local development configuration
+local.properties

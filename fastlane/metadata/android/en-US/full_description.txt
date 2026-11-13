@@ -1,0 +1,17 @@
+TIMEFLOW is a free, privacy-respecting, and open-source task management application built with a Local-First philosophy.
+
+Unlike conventional to-do list apps that merely show a static checklist, TIMEFLOW introduces real-time time-awareness: it calculates and highlights your Current Task and Next Task directly on your device's Lockscreen and Home Screen.
+
+KEY FEATURES:
+
+• 100% Offline & Private: No account required, no remote servers, zero analytics, zero trackers, and zero ads. The production app does not even request the Internet permission.
+• Home Screen Widgets: Keep track of your progress throughout the day with two native widgets:
+  - Compact Widget (2×1): Real-time daily progress bar, active task, and upcoming task.
+  - Expanded Widget (4×2): Full schedule overview with time slots and completion status.
+• Lockscreen Ongoing Notification: A silent, persistent notification that seamlessly updates as tasks start and finish, keeping your schedule visible without unlocking your phone.
+• Exact Minute Reminders: Configurable notifications before each task starts, scheduled via Android's AlarmManager for exact-minute delivery even in Doze mode. Automatically restores alarms after device reboots.
+• Monthly Calendar: A 7-column grid displaying task density indicators per day, with intuitive date-based filtering.
+• Material 3 Design: Beautiful Light and Dark themes bundled with offline Inter typography.
+
+TIMEFLOW is licensed under the GNU General Public License v3.0 (GPLv3).
+
