@@ -1,126 +1,128 @@
 # TIMEFLOW ⏳
 
-Ứng dụng quản lý thời gian, công việc, lịch trình và nhắc nhở theo hướng **Local-first / Offline-first**.
+**A modern, privacy-respecting, Local-First / Offline-First task and schedule management app for Android and Windows.**
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Windows-green.svg)](https://flutter.dev)
+[![Offline-First](https://img.shields.io/badge/Architecture-Offline--First-orange.svg)](PRIVACY_POLICY.md)
+[![Zero Trackers](https://img.shields.io/badge/Trackers-0-brightgreen.svg)](PRIVACY_POLICY.md)
+
+*Read this document in other languages: [Tiếng Việt (README_VI.md)](README_VI.md).*
 
 ---
 
-## 1. GIỚI THIỆU DỰ ÁN
+## Overview
 
-**TIMEFLOW** giúp người dùng tối ưu hóa thời gian trong ngày với trải nghiệm mượt mà, trực quan và hiện đại trên cả thiết bị di động (Android) và máy tính (Windows Desktop).
-
-### Mục tiêu chính
-* **Tạo & theo dõi công việc**: Quản lý task với thời gian bắt đầu, kết thúc và thứ tự ưu tiên.
-* **Theo dõi lịch trình trong ngày**: Nắm rõ công việc đang diễn ra (Current Task) và công việc tiếp theo (Next Task).
-* **Local-first / Offline-first**: Dữ liệu lưu giữ trực tiếp trên thiết bị, hoạt động phản hồi tức thì không cần kết nối mạng.
-* **Đa nền tảng**: Hỗ trợ tối ưu giao diện cho Android (Mobile Navigation) và Windows (Desktop Sidebar Navigation).
-* **Khả năng mở rộng**: Chuẩn bị sẵn kiến trúc cho Cloud Sync, Tài khoản Plus và Hệ thống Admin ở các Phase sau.
+**TIMEFLOW** helps you organize your daily life with clarity and minimal cognitive friction. While traditional to-do lists present a flat list of tasks, TIMEFLOW provides **real-time time awareness** by dynamically highlighting your **Current Task** (what you should be doing right now) and your **Next Task** (what is coming up next) directly on your device's **Home Screen Widgets** and **Lockscreen Ongoing Notification**.
 
 ---
 
-## 2. TECH STACK
+## Key Features
 
-* **Framework**: Flutter (Dart)
-* **Design System**: Material 3 (Light Mode & Dark Mode)
-* **State Management**: Riverpod (`flutter_riverpod`)
-* **Routing**: GoRouter (`go_router`)
-* **Formatting & i18n**: `intl` (Hỗ trợ tiếng Việt)
-* **Typography**: Google Fonts (Inter)
-* **Local Database Structure**: Chuẩn bị kiến trúc SQLite / Drift
-* **Network Architecture**: Chuẩn bị kiến trúc Dio REST Client
-
----
-
-## 3. KIẾN TRÚC DỰ ÁN
-
-Dự án áp dụng kiến trúc:
-> **Feature-First + Clean Architecture (Light) + Repository Pattern**
-
-Tách biệt rõ ràng các tầng:
-* `core/`: Chứa hằng số, chủ đề (theme), router, tiện ích, và các cấu trúc hạ tầng (database, network, storage, notification).
-* `data/`: Chứa Data Models, Interfaces và Repositories.
-* `features/`: Chia theo từng tính năng độc lập (home, calendar, tasks, statistics, timeline, settings, profile,...), mỗi feature chứa giao diện (`presentation`) và logic (`providers`).
-* `services/`: Chứa các service stub cho Auth, Cloud Sync, Notification và Subscription cho các Phase tiếp theo.
+- **100% Offline & Local-First:** Your tasks never leave your phone. All data is persisted in a local SQLite database (`timeflow.sqlite`). No login required, no cloud dependencies, instant UI responsiveness.
+- **Android Home Screen Widgets:**
+  - **Compact Widget (2×1):** Real-time daily progress bar, Current Task, and Next Task.
+  - **Expanded Widget (4×2):** Comprehensive daily schedule, time blocks, and completion metrics.
+- **Lockscreen Ongoing Notification:** A silent, persistent status notification (`IMPORTANCE_LOW`, `VISIBILITY_PUBLIC`) that automatically transitions as your tasks start and finish throughout the day.
+- **Exact Task Reminders:** Uses Android `AlarmManager` (`exactAllowWhileIdle`) for reliable notifications down to the exact minute. Automatically re-schedules alarms upon system reboot via `ScheduledNotificationBootReceiver`.
+- **Calendar & Monthly Planning:** 7-column calendar view with dot indicators showing task density, allowing quick date filtering and time scheduling.
+- **Material 3 Design:** Refined Light and Dark themes with bundled offline Inter typography.
 
 ---
 
-## 4. CẤU TRÚC THƯ MỤC (FOLDER STRUCTURE)
+## Tech Stack & Architecture
+
+TIMEFLOW adheres to **Feature-First + Clean Architecture (Light) + Repository Pattern**:
+
+- **Framework:** [Flutter](https://flutter.dev) (Dart 3.x, sound null-safety).
+- **State Management & DI:** [Riverpod](https://riverpod.dev) (`flutter_riverpod`).
+- **Local Persistence:** SQLite via [Drift ORM](https://drift.simonbinder.eu) (`drift`, `sqlite3_flutter_libs`).
+- **Routing:** [GoRouter](https://pub.dev/packages/go_router) with `StatefulShellRoute.indexedStack`.
+- **Notifications:** [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) & `timezone`.
+- **Android Native Bridge:** Kotlin (`LockscreenNotificationManager.kt`, `TimeflowWidgetCompactProvider.kt`, `TimeflowWidgetExpandedProvider.kt`).
+- **Typography:** Bundled offline Inter fonts (`assets/fonts/`).
+
+---
+
+## Folder Structure
 
 ```text
 lib/
 ├── core/
-│   ├── constants/       # Hằng số màu sắc, chữ, layout breakpoint
-│   ├── theme/           # Cấu hình Light Mode, Dark Mode & Theme Provider
-│   ├── router/          # Cấu hình GoRouter đa nền tảng
-│   ├── utils/           # Helper format ngày tháng Tiếng Việt
-│   ├── network/         # Client Dio kết nối REST API (chuẩn bị)
-│   ├── database/        # Cấu trúc Local Database (chuẩn bị)
-│   ├── notifications/   # Cấu trúc thông báo nhắc việc (chuẩn bị)
-│   └── storage/         # Lưu trữ key-value cài đặt local
-│
+│   ├── constants/       # Color palette, spacing, and layout breakpoints
+│   ├── notifications/   # Local notification scheduling and hash ID service
+│   ├── router/          # Declarative multi-tab GoRouter configuration
+│   ├── storage/         # Local settings storage (SharedPreferences)
+│   ├── theme/           # Material 3 Light/Dark theme (offline Inter typography)
+│   └── utils/           # Date and time formatting helpers
 ├── data/
-│   ├── models/          # TaskModel, Enums status & priority
-│   └── repositories/    # TaskRepository Interface & Mock implementation
-│
+│   └── database/        # Drift SQLite database (tables, DAOs, migrations)
 ├── features/
-│   ├── main_layout/     # Responsive Shell (BottomNav cho Mobile, NavigationRail cho Desktop)
-│   ├── home/            # Giao diện Hôm nay (Header, Live Clock, Task hiện tại, Task tiếp theo, Schedule)
-│   ├── calendar/        # Giao diện Lịch trình (Skeleton)
-│   ├── tasks/           # Giao diện Danh sách công việc (Skeleton)
-│   ├── statistics/      # Giao diện Thống kê năng suất (Skeleton)
-│   ├── timeline/        # Giao diện Lịch trình chi tiết (Skeleton)
-│   ├── reminders/       # Giao diện Nhắc nhở (Skeleton)
-│   ├── focus/           # Giao diện Tập trung Pomodoro (Skeleton)
-│   ├── subscription/    # Giao diện Gói TIMEFLOW Plus (Skeleton)
-│   ├── profile/         # Giao diện Hồ sơ cá nhân (Skeleton)
-│   └── settings/        # Giao diện Cài đặt (Chuyển đổi Light/Dark mode)
-│
-├── services/            # Stub services cho Auth, Sync, Notifications, Subscription
-└── main.dart            # Khởi chạy ProviderScope và MaterialApp.router
+│   ├── calendar/        # Monthly calendar grid and day filtering
+│   ├── home/            # Today screen (Current Task, Next Task, Timeline)
+│   ├── home_widget/     # Logic and providers feeding Android Home Widgets
+│   ├── lockscreen/      # Native MethodChannel bridge for Lockscreen notification
+│   ├── main_layout/     # Adaptive layout (BottomNavBar on mobile, NavRail on desktop)
+│   ├── reminders/       # Scheduled task reminders list screen
+│   ├── settings/        # Theme switcher (Light, Dark, System)
+│   └── tasks/           # Task CRUD operations and form dialogs
+└── main.dart            # Application entry point
 ```
 
 ---
 
-## 5. CÁCH CHẠY DỰ ÁN
+## Building and Running
 
-### Yêu cầu tiên quyết
-* Flutter SDK (phiên bản >= 3.19.0)
-* Dart SDK (phiên bản >= 3.3.0)
+### Prerequisites
+- Flutter SDK (version 3.x stable)
+- Dart SDK (^3.11.4)
+- JDK 17
+- Android SDK (API 34/35)
 
-### Cài đặt thư viện & Sinh mã Drift Database
+### Setup & Code Generation
 ```bash
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Format code & Kiểm tra mã nguồn
-```bash
-dart format lib test
-flutter analyze
-```
-
-### Chạy Unit & Database Tests
+### Run Tests
 ```bash
 flutter test
 ```
 
-### Chạy ứng dụng trên Android
+### Run on Android
 ```bash
 flutter run -d android
 ```
 
-### Chạy ứng dụng trên Windows Desktop
+### Build Debug APK
 ```bash
-flutter run -d windows
+flutter build apk --debug
 ```
+
+### Release Signing
+To build signed release APKs for GitHub Releases or IzzyOnDroid:
+1. Copy `android/key.properties.example` to `android/key.properties`.
+2. Configure your keystore credentials in `android/key.properties`.
+3. Run `flutter build apk --release`.
+
+*(Note: When building for F-Droid, F-Droid builds from source using its own signing keys; if `key.properties` is absent, an unsigned release APK is generated automatically).*
 
 ---
 
-## 6. CÁC PHASE PHÁT TRIỂN TIẾP THEO
+## Permissions & Privacy
 
-* **Phase 1 (HOÀN THÀNH)**: Khởi tạo dự án, kiến trúc Clean Architecture + Riverpod + GoRouter, Material 3 Light/Dark theme, Responsive layout Mobile/Desktop.
-* **Phase 2 (HOÀN THÀNH)**: Tích hợp Local Database bằng Drift & SQLite (`timeflow.sqlite`), hoàn thiện Task CRUD (Create, Watch Stream, Update, Delete, Toggle Completion), Title & Time Validation, kết nối dữ liệu thật cho Home Screen và Tasks Screen.
-* **Phase 3 (HOÀN THÀNH)**: Hoàn thiện màn hình Lịch (Calendar & Task Scheduling), hiển thị lưới 7 cột với các ngày thuộc tháng kế cận, dấu chấm chỉ báo công việc (tối đa 3 dots), tự động lọc theo ngày được chọn, sắp xếp công việc theo giờ, tích hợp full Task CRUD từ Calendar, hỗ trợ nút "Hôm nay" và chuyển tháng linh hoạt.
-* **Phase 4**: Tích hợp Local Notifications nhắc giờ công việc trên Android và Windows.
-* **Phase 5**: Hoàn thiện chế độ Tập trung (Pomodoro Timer) và Biểu đồ Thống kê Năng suất.
-* **Phase 6**: Backend API, Google Login, Đồng bộ dữ liệu Cloud Sync cho tài khoản TIMEFLOW Plus và Hệ thống Admin.
+The release version of TIMEFLOW **does not request the `INTERNET` permission**. Your data never leaves your device.
 
+- `POST_NOTIFICATIONS`: Required on Android 13+ to display reminders and the lockscreen schedule notification.
+- `SCHEDULE_EXACT_ALARM`: Enables timely alarms down to the exact minute.
+- `RECEIVE_BOOT_COMPLETED`: Automatically restores scheduled reminders after your device restarts.
+
+Read our complete [Privacy Policy](PRIVACY_POLICY.md).
+
+---
+
+## License
+
+This project is licensed under the **[GNU General Public License v3.0 (GPLv3)](LICENSE)**.  
+The bundled Inter font family is licensed under the **[SIL Open Font License 1.1](assets/fonts/LICENSE_OFL.txt)**.
